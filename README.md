@@ -1,3 +1,5 @@
+[![License: MIT](https://shields.io)](https://opensource.org)
+
 # Symmetric Rigid Body Maneuvering (SRBM)
 
 SRBM is an open, airframe‑agnostic architectural framework for autonomous air combat systems. It is not a flight controller, not a vehicle specification, and not a tactical AI model. SRBM is a conceptual operating system for high‑authority, machine‑native maneuvering, designed to separate cognition from aerodynamics and to present any airframe as a clean, idealized 6‑DoF rigid body to an autonomous tactical policy.

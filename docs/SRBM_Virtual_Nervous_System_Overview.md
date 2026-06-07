@@ -1,44 +1,80 @@
-SRBM Virtual Nervous System Overview
-This document provides the conceptual foundation for understanding the three-layer SRBM control architecture. It explains why the system is structured the way it is, how each layer maps to a biological nervous system, and how this separation of responsibilities enables airframe agnostic, high agility autonomous maneuvering.
-________________________________________
-Purpose of This Document
-The formal SRBM specifications define the mathematics, data structures, and control laws that govern autonomous air combat behavior. However, new readers often need a clear mental model before diving into those details.
-The SRBM architecture is intentionally designed to mirror the structure of a biological nervous system. This document introduces that model so readers can understand the architectural philosophy behind Layers 1, 2, and 3.
-________________________________________
-Conceptual Diagram (Placeholder)
-[ SRBM Virtual Nervous System Diagram Placeholder ]
+# SRBM Virtual Nervous System Overview
 
-Layer 3 — Cognition / Motor Cortex
-          ↓ (idealized rigid-body intent)
-Layer 2 — Vestibular System / Proprioception
-          ↓ (safe, envelope compliant command)
-Layer 1 — Spinal Reflex Arc
-          ↓ (actuator deflections at 20 kHz)
-Airframe — Physical Response
-A rendered diagram should be added here in the future.
-________________________________________
-1. Layer 3 — Cognition / Motor Cortex
-Layer 3 operates entirely within the latent tactical intent space defined in Appendix C. It has no awareness of control surfaces, actuators, or aerodynamic mechanisms. Its sole responsibility is to generate an idealized rigid-body motion command:
-[ u_{RB} = (p, q, r, T, B) ]
-This is equivalent to a human deciding, "I need to pivot my body right now to face the threat." Layer 3 focuses exclusively on tactical reasoning and geometric intent, not on how that intent will be physically realized.
-________________________________________
-2. Layer 2 — Vestibular System / Proprioception
-Layer 2 enforces all physical feasibility constraints. It receives the idealized rigid-body command from Layer 3 and projects it onto the safe, flyable envelope defined by structural limits, dynamic pressure, actuator authority, and mission constraints.
-If Layer 3 requests a maneuver that would exceed structural limits or violate aerodynamic feasibility, Layer 2 automatically reshapes the command into a safe version. This mirrors the human vestibular system and brainstem, which prevent the body from performing movements that would cause injury.
-________________________________________
-3. Layer 1 — Spinal Reflex Arc
-Layer 1 runs the high-rate (20 kHz) IMU-driven control loop. It is the only layer with direct authority over actuators. Its role is to convert the safe rigid-body command into coordinated actuator deflections using the control-effectiveness matrix.
-This layer behaves like the human spinal cord: it performs rapid, local, reflexive adjustments to maintain stability and achieve the commanded geometry, even in chaotic aerodynamic conditions.
-________________________________________
-Tactical Consequence — Absolute Cognitive Focus
-Because Layers 1 and 2 fully insulate Layer 3 from the mechanics of flight, the tactical AI never spends computational effort on aerodynamics, control allocation, or stability. It operates with complete cognitive freedom, dedicating 100% of its compute to tactical reasoning.
-This separation of responsibilities is the core advantage of the SRBM architecture: a clean, hierarchical control stack that mirrors biological systems and enables airframe agnostic, high agility autonomous maneuvering.
-________________________________________
-Relationship to the Formal Specification
-This conceptual model corresponds directly to the formal SRBM documents:
-•	Appendix C defines the latent tactical intent space used by Layer 3.
-•	Unified Tactical Architecture describes how intent is blended and produced.
-•	Envelope Enforcement (Section 0.13.4) defines the Layer 2 safety manifold.
-•	Moment Allocation Solver defines the Layer 1 actuator mapping and high-rate control loop.
-Readers should use this document as a conceptual on ramp before exploring the mathematical and implementation details in the full specification.
+This document establishes the foundational conceptual architecture of the Symmetric Rigid Body Maneuvering (SRBM) framework. By decoupling tactical cognition from aerodynamic execution, SRBM provides an airframe-agnostic control topography capable of high-authority, non-linear maneuvering. 
 
+---
+
+## 1. Architectural Mandate
+
+Modern autonomous aviation is traditionally bottlenecked by the tight coupling of guidance logic to platform-specific aerodynamics. If an autonomous policy must constantly calculate physical control allocations, its computational throughput for tactical reasoning drops significantly.
+
+The SRBM paradigm resolves this by mimicking a biological nervous system. It establishes a multi-tiered hierarchy that abstracts physical control surface complexity away from the tactical core, transforming any host platform into a standardized, virtualized 6-DoF rigid body.
+
+---
+
+## 2. Topographical Model
+
+```text
+       [ LAYER 3: COGNITION MANIFOLD ]  ← (Motor Cortex)
+                      ↓ 
+          Idealized Rigid-Body Intent Vector [u_RB]
+                      ↓ 
+  [ LAYER 2: DETERMINISTIC SAFETY MANIFOLD ]  ← (Vestibular System)
+                      ↓ 
+         Feasible, Envelope-Compliant Commands
+                      ↓ 
+    [ LAYER 1: HARDWARE AUTHORIZATION LAYER ]  ← (Spinal Reflex Arc)
+                      ↓ 
+     High-Rate Actuator Output (20 kHz Loop)
+                      ↓ 
+             [ PHYSICAL AIRFRAME ]
+```
+
+---
+
+## 3. Layer Functionality Breakdown
+
+### Layer 3 — The Cognition Manifold (Motor Cortex)
+Layer 3 operates exclusively within the latent tactical intent space. It has zero visibility into control surface topologies, engine metrics, or actuator state spaces. 
+
+Its sole objective is to output geometric, airframe-agnostic motion intent, modeled as a control vector:
+
+$$u_{RB} = [p, q, r, T, B]^T$$
+
+Where:
+* $p, q, r$: Demanded body-frame angular rates (roll, pitch, yaw)
+* $T$: Normal force / linear thrust demand
+* $B$: Dynamic slip / multi-axis intent bias
+
+This mirrors a biological entity deciding *where* to move in 3D space, completely unconcerned with which muscles must contract to achieve the state change.
+
+### Layer 2 — The Deterministic Safety Manifold (Vestibular System)
+Layer 2 serves as the system's proprioceptive governor. It intercepts the unconstrained vector $u_{RB}$ from Layer 3 and projects it mathematically onto a bounded, flyable envelope. This safety substrate calculates:
+* Structural load thresholds ($G$-limits)
+* Dynamic pressure bounds ($q$-dynamics)
+* High-alpha aerodynamic feasibility limits
+
+If Layer 3 commands a state transition that would induce structural failure or aerodynamic stall, Layer 2 instantly de-rotates and reshapes the command at the boundary edge before it can exit the manifold.
+
+### Layer 1 — The Hardware Authorization Layer (Spinal Reflex Arc)
+Layer 1 is the high-rate (**20 kHz**), deterministic inner loop with exclusive hardware execution authority. It samples high-fidelity IMU data to run a localized moment-allocation solver. 
+
+Taking the optimized, safe command from Layer 2, it dynamically maps the required rigid-body moments across whatever actuators are present on the host airframe (e.g., flaperons, canards, or thrust-vectoring nozzles). This layer acts as a mechanical stabilizer, absorbing environmental turbulence and atmospheric anomalies beneath the threshold of conscious tactical reasoning.
+
+---
+
+## 4. Tactical Implications
+
+By trapping the complex physics of flight within Layers 1 and 2, the tactical AI policy achieves **absolute cognitive focus**. 
+
+Because the underlying airframe is completely virtualized into a clean geometric input, an organization can compile a single tactical policy and deploy it identically across a swarm of highly disparate vehicles—regardless of variations in surface area, weight distribution, or propulsion types.
+
+---
+
+## 5. Mapping to Formal Technical Specifications
+
+This overview serves as the architectural preamble to the primary engineering documents. To implement the mechanics detailed here, reference the following specification modules:
+
+* **Appendix C (Latent Tactical Intent Space):** Defines the mathematical boundaries of the Layer 3 control vector.
+* **Section 0.13.4 (Envelope Enforcement Manifold):** Outlines the non-linear projection math governing Layer 2 boundaries.
+* **Moment Allocation Solver (Module 4):** Details the 20 kHz optimization loops and control-effectiveness matrix ($B$-matrix) execution for Layer 1.

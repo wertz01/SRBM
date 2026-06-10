@@ -39,11 +39,10 @@ As a result, autonomy can operate on a stable, geometry-agnostic abstraction rat
 - [Start Here: The SRBM Virtual Nervous System](#start-here-the-srbm-virtual-nervous-system)
 - [What Problem SRBM Solves](#what-problem-srbm-solves)
 - [Architectural Overview](#architectural-overview)
-# Architectural Overview
   - [Layer 3 — Cognition (Motor Cortex)](#layer-3--cognition-motor-cortex)
   - [Layer 2 — Proprioception (Vestibular-System)](#layer-2--proprioception-vestibular-system)
   - [Layer 1 — Reflex Arc (Spinal Loop)](#layer-1--reflex-arc-spinal-loop)
-  
+
 ---
 
 # Start Here: The SRBM Virtual Nervous System
@@ -56,7 +55,11 @@ For complete technical details:
 
 📄 **[SRBM Complete Specification (PDF)](docs/SRBM_Complete_Specification.pdf)**
 
-The Virtual Nervous System introduces the architecture through a biological analogy:
+The Virtual Nervous System introduces the architecture through a biological analogy.
+
+---
+
+# Architectural Overview
 
 ## Layer 3 — Cognition (Motor Cortex)
 
@@ -99,10 +102,10 @@ This creates a significant AI-to-reality challenge.
 SRBM addresses this by separating responsibilities:
 
 | Layer | Responsibility |
-|---------|----------------|
-| Layer 3 | Determine desired motion |
-| Layer 2 | Determine safe motion |
-| Layer 1 | Determine how motion is physically produced |
+|-------|----------------|
+| **Layer 3** | Determine desired motion |
+| **Layer 2** | Determine safe motion |
+| **Layer 1** | Determine how motion is physically produced |
 
 The tactical policy no longer reasons about actuators, control surfaces, or aerodynamic implementation.
 

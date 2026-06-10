@@ -1,67 +1,114 @@
-[![License: MIT](https://shields.io)](https://opensource.org)
-
 # Symmetric Rigid Body Maneuvering (SRBM)
 
-SRBM is an open, airframe‑agnostic architectural framework for autonomous air combat systems. It is not a flight controller, not a vehicle specification, and not a tactical AI model. SRBM is a conceptual operating system for high‑authority, machine‑native maneuvering, designed to separate cognition from aerodynamics and to present any airframe as a clean, idealized 6‑DoF rigid body to an autonomous tactical policy.
+[![License: MIT](https://shields.io)](https://opensource.org)
 
-## Start Here: The SRBM Virtual Nervous System
+SRBM is an open, airframe-agnostic architectural framework for autonomous maneuvering systems.
 
-For the complete technical engineering details, download the **[SRBM Complete Specification PDF](docs/SRBM_Complete_Specification.pdf)**.
+It is **not** a flight controller, **not** a vehicle specification, and **not** a tactical AI model.
 
-For readers new to SRBM, begin with the conceptual overview:
+SRBM is a **control-virtualization architecture** that separates cognition from physical implementation. It allows autonomous systems to reason in terms of idealized rigid-body motion while deterministic lower layers enforce safety, feasibility, and hardware realization.
 
-➡️ **[Read the SRBM Virtual Nervous System Overview](docs/SRBM_Virtual_Nervous_System_Overview.md)**
-
-This document explains the architecture using the virtual nervous system model:
-
-* **Layer 3 — Cognition** (latent‑space tactical intent)
-* **Layer 2 — Proprioception** (deterministic envelope enforcement)
-* **Layer 1 — Reflex Arc** (20 kHz moment‑allocation loop)
-
-It provides the mental model needed to understand why SRBM separates cognition from aerodynamics and how the three layers interact to produce airframe‑agnostic, high‑authority maneuvering.
-
-## Architectural Overview
-
-The architecture is built around a simple idea: treat the aircraft as a robotic effector platform rather than a traditional aerodynamic vehicle. SRBM defines a three‑layer hierarchy that cleanly isolates tactical reasoning, safety enforcement, and hardware actuation.
-
-### Layer 3 — Cognition Manifold
-The top layer produces a normalized rigid‑body intent vector using latent‑space doctrine blending. It operates entirely in a geometric, airframe‑agnostic representation of motion. It does not know what a flaperon, rudder, or thrust‑vectoring nozzle is. It outputs only idealized rigid‑body motion.
-
-### Layer 2 — Deterministic Safety Manifold
-This layer projects the cognitive intent onto a feasibility‑safe envelope, ensuring that structural, aerodynamic, and mission constraints are respected. It acts as a proprioceptive safety boundary, reshaping unsafe commands before they ever reach hardware authority.
-
-### Layer 1 — Hardware Authorization Layer
-The base layer allocates the resulting rigid‑body moments across the airframe’s multi‑effector control surfaces and propulsion elements. It runs at a high rate (20 kHz) and is the only layer with direct actuator authority. It behaves like a reflex arc, stabilizing and shaping motion beneath conscious tactical reasoning.
-
-## Virtualization Boundary
-
-SRBM assumes a high‑rate inner loop and a slower tactical loop, creating a virtualization boundary that hides aerodynamic complexity and actuator dynamics from the tactical layer. This allows the AI to operate on a stable, geometry‑agnostic representation of motion, independent of:
-
-* Airframe shape
-* Control‑surface topology
-* Propulsion configuration
-* Aerodynamic coefficients
-
-Any platform that provides a control‑effectiveness matrix and actuator limits can host SRBM without modifying the tactical layer.
-
-## Scope and Intent
-
-The framework is intentionally abstract. It does not prescribe:
-
-* Aerodynamic models
-* Actuator dynamics
-* MPC horizons
-* State‑dependent control‑effectiveness matrices
-* CFD‑derived coefficients
-
-Those details belong to lower‑level subsystem specifications that vary across platforms, missions, and manufacturers. SRBM defines the interfaces, invariants, and information flow that make machine‑native maneuvering portable and scalable.
-
-This release provides a clear, rigorous, and reusable conceptual foundation for organizations exploring high‑authority autonomous flight. It is offered freely as a seed idea, not tied to any program, contract, or platform. The intent is to inspire new architectures, new airframes, and new ways of thinking about autonomy in contested airspace.
-
-SRBM is a framework for the next generation of autonomous maneuvering systems, built around the principle that an aircraft is simply a robot with an aerodynamic effector shell, and that autonomy should operate on the rigid‑body abstraction rather than the physics beneath it.
+The framework was originally motivated by autonomous air combat, but the architecture applies to any vehicle that can be represented as a controllable rigid body, including aircraft, spacecraft, missiles, submarines, and other robotic systems.
 
 ---
 
-### Resources
-* 📄 **[Download the Full SRBM Specification Document (PDF)](docs/SRBM_Complete_Specification.pdf)**
-* 📂 **[Browse the Project Documentation](docs/)**
+## Core Thesis
+
+Modern autonomy is often forced to reason in platform-specific implementation details:
+
+- aerodynamic coefficients
+- control-surface topology
+- actuator dynamics
+- structural limits
+- propulsion architecture
+
+This tightly couples cognition to a particular vehicle and makes transferring autonomy between platforms difficult.
+
+SRBM introduces a virtualization boundary between cognition and physics.
+
+The cognitive layer issues rigid-body intent.
+
+Deterministic lower layers enforce safety and realize that intent on a specific vehicle.
+
+As a result, autonomy can operate on a stable, geometry-agnostic abstraction rather than the underlying implementation.
+
+---
+
+## Table of Contents
+
+- [Start Here: The SRBM Virtual Nervous System](#start-here-the-srbm-virtual-nervous-system)
+- [What Problem SRBM Solves](#what-problem-srbm-solves)
+- [Architectural Contributions](#architectural-contributions)
+- [Architectural Overview](#architectural-overview)
+  - [Layer 3 — Cognition Manifold](#layer-3--cognition-manifold)
+  - [Layer 2 — Deterministic Safety Manifold](#layer-2--deterministic-safety-manifold)
+  - [Layer 1 — Hardware Authorization Layer](#layer-1--hardware-authorization-layer)
+- [Virtualization Boundary](#virtualization-boundary)
+- [How to Read This Repository](#how-to-read-this-repository)
+- [Scope and Intent](#scope-and-intent)
+- [Roadmap](#roadmap)
+- [Summary](#summary)
+
+---
+
+# Start Here: The SRBM Virtual Nervous System
+
+For readers new to SRBM, begin with the conceptual overview:
+
+➡️ **[SRBM Virtual Nervous System Overview](docs/SRBM_Virtual_Nervous_System_Overview.md)**
+
+For complete technical details:
+
+📄 **[SRBM Complete Specification (PDF)](docs/SRBM_Complete_Specification.pdf)**
+
+The Virtual Nervous System introduces the architecture through a biological analogy:
+
+## Layer 3 — Cognition (Motor Cortex)
+
+- Tactical intent generation
+- Latent doctrine blending
+- α/γ doctrine manifold
+- Airframe-agnostic motion reasoning
+
+## Layer 2 — Proprioception (Vestibular System)
+
+- Envelope enforcement
+- Feasibility projection
+- Constraint management
+- Deterministic safety guarantees
+
+## Layer 1 — Reflex Arc (Spinal Loop)
+
+- High-rate moment allocation
+- Actuator authorization
+- Disturbance rejection
+- Motion realization
+
+Together these layers transform a physical vehicle into a virtualized rigid-body substrate suitable for machine-native maneuvering.
+
+---
+
+# What Problem SRBM Solves
+
+Many autonomy systems attempt to solve tactical reasoning and physical control simultaneously.
+
+As a result, cognitive policies often become coupled to:
+
+- actuator layouts
+- aerodynamic behavior
+- propulsion configurations
+- platform-specific constraints
+
+This creates a significant AI-to-reality challenge.
+
+SRBM addresses this by separating responsibilities:
+
+| Layer | Responsibility |
+|---------|----------------|
+| Layer 3 | Determine desired motion |
+| Layer 2 | Determine safe motion |
+| Layer 1 | Determine how motion is physically produced |
+
+The tactical policy no longer reasons about actuators, control surfaces, or aerodynamic implementation.
+
+Instead, it operates on an idealized rigid-body abstraction.

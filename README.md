@@ -42,12 +42,7 @@ As a result, autonomy can operate on a stable, geometry-agnostic abstraction rat
   - [Layer 3 — Cognition (Motor Cortex)](#layer-3--cognition-motor-cortex)
   - [Layer 2 — Proprioception (Vestibular-System)](#layer-2--proprioception-vestibular-system)
   - [Layer 1 — Reflex Arc (Spinal Loop)](#layer-1--reflex-arc-spinal-loop)
-- [Virtualization Boundary](#virtualization-boundary)
-- [How to Read This Repository](#how-to-read-this-repository)
-- [Scope and Intent](#scope-and-intent)
-- [Roadmap](#roadmap)
-- [Summary](#summary)
-
+  
 ---
 
 # Start Here: The SRBM Virtual Nervous System

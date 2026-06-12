@@ -1,32 +1,31 @@
-# How to Read This Document
-
-SRBM is not a flight controller, not a UAV design, and not a tactical AI model.  
-It is a **co-design architecture** that defines the contract between cognition, safety, and hardware.
-
-This specification must be read as an **operating system–level abstraction**, not as an aircraft-specific control law.  
-SRBM introduces a rigid‑body virtualization boundary:
-
-- **Layer 3** reasons only in idealized rigid-body motion, independent of geometry or aerodynamics.  
-- **Layer 2** enforces deterministic safety and feasibility.  
-- **Layer 1** realizes motion on any physical vehicle.
-
-The goal is to separate *what the AI wants to do* from *how the vehicle physically does it*.  
-SRBM is therefore a blueprint for **AI–hardware co-design**, enabling portable autonomy across any controllable rigid body.
-
-If you read this document with that framing, the architecture becomes universal, modular, and intentionally airframe‑agnostic.
-
-
 # Symmetric Rigid Body Maneuvering (SRBM)
 
 [![License: MIT](https://shields.io)](https://opensource.org)
 
+## How to Read This Document
+
+SRBM is **not** a flight controller, **not** a UAV design, and **not** a tactical AI model.  
+It is a **co-design architecture** that defines the contract between cognition, safety, and hardware.
+
+This specification must be read as an **operating-system–level abstraction**, not as an aircraft-specific control law.  
+SRBM introduces a rigid-body virtualization boundary that cleanly separates:
+
+- **Layer 3 — Cognition:** idealized rigid-body intent, independent of geometry or aerodynamics  
+- **Layer 2 — Safety:** deterministic feasibility, envelope enforcement, constraint management  
+- **Layer 1 — Hardware:** moment allocation, actuator realization, disturbance rejection  
+
+The goal is to separate *what the AI wants to do* from *how the vehicle physically does it*.  
+SRBM is therefore a blueprint for **AI–hardware co-design**, enabling portable autonomy across any controllable rigid body.
+
+If you read this document with that framing, the architecture becomes universal, modular, and intentionally airframe-agnostic.
+
+---
+
 SRBM is an open, airframe-agnostic architectural framework for autonomous maneuvering systems.
 
-It is **not** a flight controller, **not** a vehicle specification, and **not** a tactical AI model.
+SRBM is a **control-virtualization architecture** that allows autonomous systems to reason in terms of idealized rigid-body motion while deterministic lower layers enforce safety, feasibility, and hardware realization.
 
-SRBM is a **control-virtualization architecture** that separates cognition from physical implementation. It allows autonomous systems to reason in terms of idealized rigid-body motion while deterministic lower layers enforce safety, feasibility, and hardware realization.
-
-The framework was originally motivated by autonomous air combat, but the architecture applies to any vehicle that can be represented as a controllable rigid body, including aircraft, spacecraft, missiles, submarines, and other robotic systems.
+Originally motivated by autonomous air combat, the architecture applies to any vehicle that can be represented as a controllable rigid body, including aircraft, spacecraft, missiles, submarines, and other robotic systems.
 
 ---
 

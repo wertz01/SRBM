@@ -14,10 +14,12 @@ SRBM introduces a rigid-body virtualization boundary that cleanly separates:
 - **Layer 2 — Safety:** deterministic feasibility, envelope enforcement, constraint management  
 - **Layer 1 — Hardware:** moment allocation, actuator realization, disturbance rejection
 
-  flowchart TD
-    A[Layer 3: Cognition<br/>AI or RC Intent] --> B[Layer 2: Safety / Envelope Enforcement]
+```mermaid
+flowchart TD
+    A[Layer 3: Cognition<br/>AI or RC Intent] --> B[Layer 2: Safety / Envelope]
     B --> C[Layer 1: Moment Allocation / Actuation]
-    C --> D[Layer 0: Closed-Loop Surface Controllers] 
+    C --> D[Layer 0: Closed-Loop Surface Control]
+```
 
 The goal is to separate *what the AI wants to do* from *how the vehicle physically does it*.  
 SRBM is therefore a blueprint for **AI–hardware co-design**, enabling portable autonomy across any controllable rigid body.

@@ -2,6 +2,66 @@
 
 [![License: MIT](https://shields.io)](https://opensource.org)
 
+---------------------------------------------------------------------
+
+## Why SRBM Exists
+
+Modern autonomous systems fail because the interface between cognition and physics is undefined.
+Every new airframe forces a software rewrite.
+Every actuator layout requires custom logic.
+Every tactical model becomes brittle when exposed to real aerodynamics.
+
+SRBM eliminates this failure mode by defining a strict, airframe-agnostic
+six-degree-of-freedom contract between:
+
+- what the AI wants to do
+- what physics allows
+- how the vehicle actually produces motion
+
+SRBM is not a controller, not a UAV design, and not a tactics engine.
+It is a prompt template for machine intelligence, expressed in physics instead of text.
+
+---------------------------------------------------------------------
+
+## What SRBM Is
+
+SRBM is a control-virtualization architecture that turns any controllable rigid body
+into a machine-native substrate for autonomous maneuvering.
+
+It defines a clean, three-layer handshake:
+
+1. Layer 3 - Cognition  
+   The AI outputs idealized rigid-body intent.
+
+2. Layer 2 - Safety  
+   Deterministic feasibility, envelope enforcement, and constraint management.
+
+3. Layer 1 - Hardware  
+   Moment allocation, actuator realization, and disturbance rejection.
+
+This boundary allows autonomy to operate on a stable, geometry-agnostic abstraction.
+
+---------------------------------------------------------------------
+
+## SRBM as a Prompt Template for Machine Intelligence
+
+Modern AI systems operate best when given:
+
+- a fixed output schema
+- a deterministic rule engine
+- a decoder that interprets tokens into actions
+
+SRBM mirrors this structure:
+
+- rigid-body vector (p, q, r, T, B) = output schema
+- feasibility projection = rule engine
+- moment allocation = token interpreter
+
+The result is a machine-native prompt format that constrains AI behavior
+inside a mathematically defined six-degree-of-freedom sandbox.
+
+---------------------------------------------------------------------
+
 ## How to Read This Document
 
 SRBM is **not** a flight controller, **not** a UAV design, and **not** a tactical AI model.  
@@ -134,3 +194,11 @@ SRBM addresses this by separating responsibilities:
 The tactical policy no longer reasons about actuators, control surfaces, or aerodynamic implementation.
 
 Instead, it operates on an idealized rigid-body abstraction.
+
+## Final Note
+
+SRBM is an open, airframe-agnostic, machine-native interface contract.
+It accelerates research, simplifies co-design, and makes autonomy portable
+across any controllable rigid body.
+
+If you understand the boundary, you understand the architecture.

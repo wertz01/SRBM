@@ -202,3 +202,24 @@ It accelerates research, simplifies co-design, and makes autonomy portable
 across any controllable rigid body.
 
 If you understand the boundary, you understand the architecture.
+
+## 📘 How to Cite SRBM
+
+If you use SRBM in research, teaching, or technical work, please cite it as follows:
+
+**Wertz, D. M. (2026). _Symmetric Rigid Body Maneuvering (SRBM):  
+An AI‑Native Architecture for Autonomous Air Combat._ Version 1.0.**
+
+~~~bibtex
+@misc{wertz2026srbm,
+  title        = {Symmetric Rigid Body Maneuvering (SRBM):
+                  An AI-Native Architecture for Autonomous Air Combat},
+  author       = {Wertz, Duane M.},
+  year         = {2026},
+  month        = {June},
+  version      = {1.0},
+  howpublished = {\url{https://github.com/wertz01/srbm}},
+  note         = {Top-level architectural specification and supporting documents}
+}
+~~~
+
